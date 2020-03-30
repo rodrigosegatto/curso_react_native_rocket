@@ -161,5 +161,110 @@ por
 Para que agora passemos a utilizar o App de nossos SRCs.
 Nâo preciso passar /index, pois por padrão, quando importamos ele já pega o index. Neste caso é a mesma coisa que './src/index'
 
+## Estilizando o Header e StatusBar
 
+##### Header
+No arquivo de rotas, modificar as propriedades da rota adicionando uma options, onde deixaremos o fundo laranjado e a cor branca para o texto:
 
+```js
+    options={
+        { 
+            title: 'API Produtos', 
+            headerStyle: {
+            backgroundColor: '#DA552F',
+            },
+            headerTintColor: "#FFF"
+        }
+    }
+```
+##### Statusbar
+Configurar o status bar para que o Android por exemplo, utilize a mesma cor do Header na barra de status.
+
+Criar uma pasta **config** dentro de './src', e dentro desta pasta, criar um arquivo chamado **StatusBarConfig.js**.
+
+Conteúdo:
+
+```js
+    import {StatusBar} from 'react-native';
+
+    //Estilizando Android
+    StatusBar.setBackgroundColor('#DA552F');
+    //Estilizando IOs
+    StatusBar.setBarStyle('light-content');
+```
+##### Importar na index config statusbar
+Dentro de './src/pages/index.js' inserir o seguinte import na página superior
+
+```js
+    import './config/StatusBarConfig';
+```
+## BUscando produtos da API
+
+##### Instalar o Axios
+Axios é uma extensão para que possamos consumir APIs facilmente.
+
+##### Serviçes
+Criar uma pasta **services** em './src'
+
+##### Api
+Criar um arquivo chamado **api.js** em './src/services'
+Separar assim a aplicação para consumir e receber dados.
+
+Conteído:
+
+```js
+    import axios from 'axios';
+
+    const api = axios.create({
+        baseURL: 'https://rocketseat-node.herokuapp.com/api'
+        //ou minha API feita local http://endereco:3000/api
+    });
+
+    export default api;
+```
+
+##### Importar na Main
+Dentro de **main.js** em './src/pages/' importar a API.
+Ajustar também o arquivo par que consiga consultar e mostrar os produtos. 
+Até est aparte o conteúdo ficará assim:
+
+```js  
+    import React, { Component } from 'react';
+    import { View, Text } from 'react-native';
+    import api from '../services/api';
+
+    export default class Main extends Component {
+        //React fica sempre ouvindo as alterações no estado.
+        //Quando ocorrem mudanças ele renderiza a página automaticamente de novo.
+        state = {
+            docs: []
+        };
+
+        //Disparado automaticamente ao carregar a tela
+        componentDidMount() {
+            this.loadProducts();
+        }
+
+        //Function que consulta a API de produtos
+        loadProducts = async () => {
+            const response = await api.get('/products');
+            const {docs} = response.data;
+
+            //adiciona os produtos ao estado
+            this.setState({docs});
+        };
+        
+        render () { 
+            return (
+                <View>
+                    <Text>Página Main</Text>
+                    {this.state.docs.map(product => (
+                        <Text key={product._id}>{product.title}</Text>
+                    ))}
+                </View>
+            );
+        }
+    }
+```
+
+## Listando e Estilizando Produtos

@@ -10,10 +10,18 @@ function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen 
-          name="Início" 
+        <Stack.Screen initialRouteName="Products"
+          name="Products" 
           component={Main} 
-          options={{ title: 'API Produtos' }}
+          options={
+            { 
+              title: 'API Produtos', 
+              headerStyle: {
+                backgroundColor: '#DA552F',
+              },
+              headerTintColor: "#FFF"
+            }
+          }
         />
       </Stack.Navigator>
     </NavigationContainer>
