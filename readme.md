@@ -87,14 +87,29 @@ Criar arquivo **routes.js** dentro de ./src'.
 Conteúdo: 
 
 ```js
-    import { createStackNavigator } from 'react-navigation';
+    import React, {Component} from 'react';
+    import { NavigationContainer } from '@react-navigation/native';
+    import { createStackNavigator } from '@react-navigation/stack';
 
     import Main from './pages/main';
+
+    const Stack = createStackNavigator();
     
-    //Chamar a página main
-    export default createStackNavigator({
-        Main
-    });
+    function App() {
+        return (
+            <NavigationContainer>
+            <Stack.Navigator>
+                <Stack.Screen 
+                name="Início" 
+                component={Main} 
+                options={{ title: 'API Produtos' }}
+                />
+            </Stack.Navigator>
+            </NavigationContainer>
+        );
+    }
+    
+    export default App;
 ```
 
 ##### Arquivo index
@@ -130,7 +145,7 @@ Conteúdo:
                 <View>
                     <Text>Página Main</Text>
                 </View>
-            )
+            );
         }
     }
 ```
@@ -143,7 +158,7 @@ por
 
     './src'
 
-Para que agora passemos a utilizar o App de nossos sources.
+Para que agora passemos a utilizar o App de nossos SRCs.
 Nâo preciso passar /index, pois por padrão, quando importamos ele já pega o index. Neste caso é a mesma coisa que './src/index'
 
 
