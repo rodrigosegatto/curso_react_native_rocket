@@ -498,3 +498,25 @@ Arquivo **main.js** agora ficará assim:
 ```
 
 ## Detalhe com WebView
+
+##### Página do produto
+Criar um arquivo **product.js** dentro de './src/pages'.
+
+Conteúdo: 
+
+```js
+    import React from 'react';
+    import {Text} from 'react-native';
+
+    //Como essa página não terá estado e outras funcionalidades,
+    //Podemos utilizar apenas uma variavel ao inves de uma classe
+    const product = () => (
+        <Text></Text>
+    );
+
+    export default Product;
+```
+
+##### Rota para produtos
+Importar Product dentro das rotas e adicionar navigation para o mesmo.
+

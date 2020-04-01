@@ -3,6 +3,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
 import Main from './pages/main';
+import Product from './pages/product';
 
 const Stack = createStackNavigator();
   
@@ -22,6 +23,11 @@ function App() {
               headerTintColor: "#FFF"
             }
           }
+        />
+        <Stack.Screen
+          name="Product" 
+          component={Product} 
+          options={Product.navigationOptions}
         />
       </Stack.Navigator>
     </NavigationContainer>
