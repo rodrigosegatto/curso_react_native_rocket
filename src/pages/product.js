@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
-import {Text,View} from 'react-native';
+import {WebView} from 'react-native-webview';
 
-//Como essa página não terá estado e outras funcionalidades,
-//Podemos utilizar apenas uma variavel ao inves de uma classe
-const Product = () => (
-    <Text></Text>
-);
+export default class Product extends Component {
+    render(){
+        //console.log(this.props.route.params.product.title);
 
-Product.navigationOptions = ({ navigation }) => ({
-    title: 'TETE'
-});
+        //Retorna o acesso a uma WebView (endereço da internet) que está carregado dentro do APP
+        return (
+            <WebView source={{uri : this.props.route.params.product.url}} />
+        )
 
-export default Product;
+    }
+}

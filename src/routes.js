@@ -27,7 +27,9 @@ function App() {
         <Stack.Screen
           name="Product" 
           component={Product} 
-          options={Product.navigationOptions}
+          options={
+            ({ route }) => ({ title: route.params.product.title })
+          }
         />
       </Stack.Navigator>
     </NavigationContainer>

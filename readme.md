@@ -499,24 +499,109 @@ Arquivo **main.js** agora ficará assim:
 
 ## Detalhe com WebView
 
+##### Instalar react-native-webview
+Rodar o comando abaixo
+
+    yarn add react-native-webview
+    OU
+    npm install --save react-native-webview
+
+Comando: 
+
+    react-native link react-native-webview
+
+Mais informações em [https://github.com/react-native-community/react-native-webview/blob/master/docs/Getting-Started.md]
+
 ##### Página do produto
 Criar um arquivo **product.js** dentro de './src/pages'.
 
 Conteúdo: 
 
 ```js
-    import React from 'react';
-    import {Text} from 'react-native';
+    import React, { Component } from 'react';
+    import {WebView} from 'react-native-webview';
 
-    //Como essa página não terá estado e outras funcionalidades,
-    //Podemos utilizar apenas uma variavel ao inves de uma classe
-    const product = () => (
-        <Text></Text>
-    );
+    export default class Product extends Component {
+        render(){
+            //console.log(this.props.route.params.product.title);
 
-    export default Product;
+            //Retorna o acesso a uma WebView (endereço da internet) que está carregado dentro do APP
+            return (
+                <WebView source={{uri : this.props.route.params.product.url}} />
+            )
+
+        }
+    }
+```
+
+##### Passar parâmetros para rota
+No arquivo **main.js** ajustar para que ao clicar no botão seja encaminhado para o Produto passando o item como parâmetro, permitindo serem acessados na nova rota.
+
+Para isto, ajustar a função **renderItem()** com conteúdo abaixo.
+
+```js
+    renderItem = ({item}) => (
+            <View style={styles.productContainer}>
+                <Text style={styles.productTitle}>{item.title}</Text>
+                <Text style={styles.productDescription}>{item.description}</Text>
+                
+                <TouchableOpacity 
+                    style={styles.productButton} 
+                    onPress={() => {
+                        this.props.navigation.navigate('Product', {product: item});
+                    }} >
+                    <Text style={styles.productButtonText}>Acessar</Text>
+                </TouchableOpacity>
+            </View>
+        );
 ```
 
 ##### Rota para produtos
-Importar Product dentro das rotas e adicionar navigation para o mesmo.
+Importar Product dentro das rotas com um novo Screen e adicionar navegação para o mesmo com os parâmetros passados.
 
+Conteúdo final de **routes.js** : 
+
+```js
+    import React, {Component} from 'react';
+    import { NavigationContainer } from '@react-navigation/native';
+    import { createStackNavigator } from '@react-navigation/stack';
+
+    import Main from './pages/main';
+    import Product from './pages/product';
+
+    const Stack = createStackNavigator();
+    
+    function App() {
+    return (
+        <NavigationContainer>
+        <Stack.Navigator>
+            <Stack.Screen initialRouteName="Products"
+            name="Products" 
+            component={Main} 
+            options={
+                { 
+                title: 'API Produtos', 
+                headerStyle: {
+                    backgroundColor: '#DA552F',
+                },
+                headerTintColor: "#FFF"
+                }
+            }
+            />
+            <Stack.Screen
+            name="Product" 
+            component={Product} 
+            options={
+                ({ route }) => ({ title: route.params.product.title })
+            }
+            />
+        </Stack.Navigator>
+        </NavigationContainer>
+    );
+    }
+    
+    export default App;
+```
+
+## Pronto
+App Finalizado.
